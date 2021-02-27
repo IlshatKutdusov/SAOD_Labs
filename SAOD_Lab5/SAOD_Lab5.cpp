@@ -1,7 +1,7 @@
 ﻿/*
 ЛАБОРАТОРНАЯ РАБОТА №5
 Раздел 1, Тема 3, Номер 3
-ЛИНЕЙНЫЙ СПИСОК НА БАЗЕ МАССИВА С УКАЗАТЕЛЯМИ - ИНДЕКСАМИ
+Структура данных “список”(линейный, на базе массива с указателями - индексами)
 */
 
 #include <iostream>
@@ -12,7 +12,7 @@
 using namespace std;
 
 
-struct element
+struct Element
 {
 	int inf;
 	int point;
@@ -23,11 +23,11 @@ struct List
 {
 	int count = 0;
 	int size = SIZE;
-	element list[SIZE + 1];
+	Element list[SIZE + 1];
 };
 
 
-int get_from_cin() //функция проверка ввода
+int ConsoleReadLine() //функция проверка ввода
 {
 	int result;
 	cin >> result;
@@ -43,7 +43,7 @@ int get_from_cin() //функция проверка ввода
 }
 
 
-int search(List *l, int to_search)
+int Search(List *l, int to_search)
 {
 	int i = 0;
 	do
@@ -63,15 +63,20 @@ int search(List *l, int to_search)
 }
 
 
-void add(List *l)
+void Add(List *l)
 {
 	if (l->count == l->size)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список заполнен!" << endl;
+		std::cout << "\n####################################################################\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Введите число для добавления: ";
-		int new_inf = get_from_cin();
-
+		int new_inf = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
 		if (l->count == 0)
 		{
 			l->list[1].point = l->list[0].point;
@@ -85,23 +90,24 @@ void add(List *l)
 			for (free_index = 1; l->list[free_index].point != -1; free_index++) {}
 
 			int add_type;
+			std::cout << "\n####################################################################\n\n";
 			cout <<
 				"Добавить: " << endl <<
 				"  1. до элемента" << endl <<
 				"  2. после элемента" << endl;
 			do {
-				add_type = get_from_cin();
+				add_type = ConsoleReadLine();
 				if (add_type != 1 && add_type != 2)
 					cout << "Ошибка ввода! Попробуйте: ";
 			} while (add_type != 1 && add_type != 2);
-
+			std::cout << "\n####################################################################\n\n";
 			if (add_type == 1)
 				cout << "Добавить до: ";
 			else
 				cout << "Добавить после: ";
-			int data = get_from_cin();
-
-			int data_index = search(l, data);
+			int data = ConsoleReadLine();
+			std::cout << "\n####################################################################\n\n";
+			int data_index = Search(l, data);
 			if (data_index == -1)
 				cout << data << " элемент не найден!" << endl;
 			else
@@ -114,21 +120,27 @@ void add(List *l)
 				l->list[data_index].point = free_index;
 				l->count++;
 			}
+			std::cout << "\n####################################################################\n";
 		}
 	}
 }
 
 
-void del(List *l)
+void Delete(List *l)
 {
 	if (l->count == 0)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n";
 		cout << "Введите элемент для удаления: ";
-		int to_delete = get_from_cin();
-
-		int index = search(l, to_delete);
+		int to_delete = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		int index = Search(l, to_delete);
 		if (index == -1)
 			cout << to_delete << " элемент не найден!" << endl;
 		else
@@ -139,16 +151,22 @@ void del(List *l)
 			l->count--;
 			cout << to_delete << " удален!" << endl;
 		}
+		std::cout << "\n####################################################################\n";
 	}
 }
 
 
-void show(List *l)
+void Show(List *l)
 {
 	if (l->count == 0)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		int i = l->list[0].point;
 		while (i != 0)
 		{
@@ -156,6 +174,7 @@ void show(List *l)
 			i = l->list[i].point;
 		}
 		cout << endl;
+		std::cout << "\n####################################################################\n\n";
 	}
 }
 
@@ -174,12 +193,14 @@ int main()
 	do {
 		system("cls");
 
+		std::cout << "\n####################################################################\n\n";
 		cout <<
-			"1. Добавить" << endl <<
-			"2. Удалить" << endl <<
-			"3. Показать" << endl <<
+			"1. Показать" << endl <<
+			"2. Добавить" << endl <<
+			"3. Удалить" << endl <<
 			"0. Выход" << endl;
-		choice = get_from_cin();
+		std::cout << "\n####################################################################\n\n";
+		choice = ConsoleReadLine();
 
 		system("cls");
 
@@ -188,13 +209,13 @@ int main()
 		case 0:
 			return 0;
 		case 1:
-			add(&l);
+			Show(&l);
 			break;
 		case 2:
-			del(&l);
+			Add(&l);
 			break;
 		case 3:
-			show(&l);
+			Delete(&l);
 			break;
 		default:
 			cout << "Ошибка ввода!" << endl;

@@ -1,7 +1,7 @@
 ﻿/*
 ЛАБОРАТОРНАЯ РАБОТА №3
 Раздел 1, Тема 2, Номер 7
-Структуры данных “очередь”(кольцевая, на основе массива, случайное добавление и удаление элементов, динамическая реализация)
+Структура данных “очередь”(кольцевая, случайное добавление и удаление элементов, динамическая реализация)
 */
 
 #include "stdafx.h"
@@ -11,33 +11,33 @@
 
 using namespace std;
 
-struct queue_element
+struct QueueElement
 {
 	char data;
-	queue_element* next = nullptr;
-	queue_element* prev = nullptr;
+	QueueElement* next = nullptr;
+	QueueElement* prev = nullptr;
 };
 
 
-struct queue
+struct Queue
 {
-	queue_element* first = nullptr;
-	queue_element* last = nullptr;
+	QueueElement* first = nullptr;
+	QueueElement* last = nullptr;
 };
 
 
-bool queue_is_empty(queue* q)
+bool EmptyCheck(Queue* q)
 {
 	return q->first == nullptr || q->last == nullptr;
 }
 
 
-void push(queue* q, char inf)
+void Push(Queue* q, char inf)
 {
-	queue_element* temp = new queue_element;
+	QueueElement* temp = new QueueElement;
 	temp->data = inf;
 
-	if (queue_is_empty(q)) {
+	if (EmptyCheck(q)) {
 		q->first = temp;
 		q->last = temp;
 	}
@@ -50,11 +50,11 @@ void push(queue* q, char inf)
 }
 
 
-void pop(queue* q)
+void Pop(Queue* q)
 {
 
-	if (!queue_is_empty(q)) {
-		queue_element* to_delete = q->first;
+	if (!EmptyCheck(q)) {
+		QueueElement* ToDelete = q->first;
 
 		if (q->first == q->last)
 		{
@@ -68,20 +68,20 @@ void pop(queue* q)
 
 		}
 
-		delete to_delete;
+		delete ToDelete;
 	}
 }
 
 
-void show(queue* q)
+void Show(Queue* q)
 {
 	cout << "Статус: ";
-	if (queue_is_empty(q)) {
+	if (EmptyCheck(q)) {
 		cout << "Очередь пуста!" << endl;
 		return;
 	}
 
-	queue_element* temp = q->first;
+	QueueElement* temp = q->first;
 
 	while (temp)
 	{
@@ -92,7 +92,7 @@ void show(queue* q)
 }
 
 
-char get_random_char()
+char GetRandomChar()
 {
 	return rand() % 26 + 65;
 }
@@ -101,7 +101,7 @@ char get_random_char()
 int main()
 {
 	setlocale(LC_ALL, "Rus");
-	queue q;
+	Queue q;
 
 	srand(time(nullptr));
 	std::cout << "\n####################################################################\n" << endl;
@@ -114,18 +114,23 @@ int main()
 		if (r % 2 == 0) {
 			const int count = rand() % 3 + 1;
 			std::cout << "\n####################################################################\n\n";
-			cout << "Добавлено " << count << endl;
+			cout << "Добавлено: " << count << endl;
 			for (int i = 0; i < count; i++)
-				push(&q, get_random_char());
+				Push(&q, GetRandomChar());
 		}
 		else {
-			const int count = rand() % 3 + 1;
-			cout << "Удалено " << count << endl;
-			for (int i = 0; i < count; i++)
-				pop(&q);
+			if (EmptyCheck(&q) == false) {
+				const int count = rand() % 3 + 1;
+				cout << "Удалено: " << count << endl;
+				for (int i = 0; i < count; i++)
+					Pop(&q);
+			}
+			else {
+				cout << "Удалено: 0" << endl;
+			}
 		}
 
-		show(&q);
+		Show(&q);
 
 		std::cout << "\n####################################################################\n";
 

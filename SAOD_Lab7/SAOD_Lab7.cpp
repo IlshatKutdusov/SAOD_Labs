@@ -1,4 +1,10 @@
-﻿#include <iostream>
+﻿/*
+ЛАБОРАТОРНАЯ РАБОТА №7
+Раздел 1, Тема 4, Номер 1
+
+*/
+
+#include <iostream>
 #include <locale.h>
 
 using namespace std;

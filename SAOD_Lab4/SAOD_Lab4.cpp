@@ -1,7 +1,7 @@
 ﻿/*
 ЛАБОРАТОРНАЯ РАБОТА №4
 Раздел 1, Тема 3, Номер 2
-МОДЕЛИРОВАНИЕ УПОРЯДОЧЕННОГО ЛИНЕЙНОГО СПИСКА С ПОМОЩЬЮ МАССИВА
+Структура данных “список”(упорядоченный, линейный, на основе массива, статическая реализация)
 */
 
 #include "stdafx.h"
@@ -13,7 +13,7 @@ using namespace std;
 #define LIST_SIZE 5
 
 
-struct list_int
+struct IntList
 {
 	int count = 0;
 	int list[LIST_SIZE];
@@ -21,7 +21,7 @@ struct list_int
 };
 
 
-struct list_char
+struct CharList
 {
 	int count = 0;
 	char list[LIST_SIZE][5];
@@ -29,7 +29,7 @@ struct list_char
 };
 
 
-int get_from_cin()
+int ConsoleReadKey()
 {
 	int result;
 	cin >> result;
@@ -45,33 +45,45 @@ int get_from_cin()
 }
 
 
-void show(list_int *l)
+void Show(IntList *l)
 {
 	if (l->count == 0)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		for (int i = 0; i < l->count; i++)
 			cout << l->list[i] << " ";
 		cout << endl;
+		std::cout << "\n####################################################################\n\n";
 	}
 }
 
 
-void show(list_char *l)
+void Show(CharList *l)
 {
 	if (l->count == 0)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		for (int i = 0; i < l->count; i++)
 			cout << l->list[i] << " ";
 		cout << endl;
+		std::cout << "\n####################################################################\n\n";
 	}
 }
 
 
-int find(list_int *l, int to_find)
+int Find(IntList *l, int to_find)
 {
 	for (int i = 0; i < l->count; i++)
 	{
@@ -82,7 +94,7 @@ int find(list_int *l, int to_find)
 }
 
 
-int find(list_char *l, char* to_find)
+int Find(CharList *l, char* to_find)
 {
 	for (int i = 0; i < l->count; i++)
 	{
@@ -93,15 +105,20 @@ int find(list_char *l, char* to_find)
 }
 
 
-void add(list_int *l) // числа
+void Add(IntList *l) // числа
 {
 	if (l->count == l->size)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список заполнен!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Введите число, чтобы добавить: ";
-		int to_add = get_from_cin();
-
+		int to_add = ConsoleReadKey();
+		std::cout << "\n####################################################################\n\n";
 		bool has_added = false;
 
 		for (int i = 0; i < l->count; i++)
@@ -126,16 +143,21 @@ void add(list_int *l) // числа
 }
 
 
-void add(list_char *l) // символы
+void Add(CharList *l) // символы
 {
 	if (l->count == l->size)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список заполнен!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Введите строку, чтобы добавить: ";
 		char to_add[5];
 		cin >> to_add;
-
+		std::cout << "\n####################################################################\n\n";
 		bool has_added = false;
 
 		for (int i = 0; i < l->count; i++)
@@ -159,16 +181,21 @@ void add(list_char *l) // символы
 }
 
 
-void to_delete(list_int *l)//функция удаления
+void ToDelete(IntList *l)//функция удаления
 {
 	if (l->count == 0)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Введите число для удаления:: ";
-		int to_delete = get_from_cin();
-
-		int index = find(l, to_delete);
+		int ToDelete = ConsoleReadKey();
+		std::cout << "\n####################################################################\n\n";
+		int index = Find(l, ToDelete);
 		if (index == -1)
 			cout << "Число не найдено!" << endl;
 		else
@@ -176,23 +203,28 @@ void to_delete(list_int *l)//функция удаления
 			for (int i = index; i < l->count - 1; i++)
 				l->list[i] = l->list[i + 1];
 			l->count--;
-			cout << to_delete << " удален!" << endl;
+			cout << ToDelete << " удален!" << endl;
 		}
 	}
 }
 
 
-void to_delete(list_char *l)
+void ToDelete(CharList *l)
 {
 	if (l->count == 0)
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Введите строку для удаления: ";
-		char to_delete[5];
-		cin >> to_delete;
-
-		int index = find(l, to_delete);
+		char ToDelete[5];
+		cin >> ToDelete;
+		std::cout << "\n####################################################################\n\n";
+		int index = Find(l, ToDelete);
 		if (index == -1)
 			cout << "Строка не найдена!" << endl;
 		else
@@ -200,8 +232,9 @@ void to_delete(list_char *l)
 			for (int i = index; i < l->count - 1; i++)
 				strcpy_s(l->list[i], l->list[i + 1]);
 			l->count--;
-			cout << to_delete << " удален!" << endl;
+			cout << ToDelete << " удален!" << endl;
 		}
+		std::cout << "\n####################################################################\n\n";
 	}
 }
 
@@ -216,13 +249,13 @@ int main()
 	std::cout << "\n####################################################################\n";
 	do
 	{
-		list_type = get_from_cin();
+		list_type = ConsoleReadKey();
 		if (list_type != 1 && list_type != 2)
 			cout << "Неправильный ввод! Попробуйте заново: ";
 	} while (list_type != 1 && list_type != 2);
 
-	list_int list_i;
-	list_char list_c;
+	IntList list_i;
+	CharList list_c;
 
 	int choice = -1;
 
@@ -237,7 +270,7 @@ int main()
 			"0. Выход" << endl;
 		std::cout << "\n####################################################################\n";
 
-		choice = get_from_cin();
+		choice = ConsoleReadKey();
 
 		system("cls");
 
@@ -247,21 +280,21 @@ int main()
 			return 0;
 		case 1:
 			if (list_type == 1)
-				show(&list_i);
+				Show(&list_i);
 			else
-				show(&list_c);
+				Show(&list_c);
 			break;
 		case 2:
 			if (list_type == 1)
-				add(&list_i);
+				Add(&list_i);
 			else
-				add(&list_c);
+				Add(&list_c);
 			break;
 		case 3:
 			if (list_type == 1)
-				to_delete(&list_i);
+				ToDelete(&list_i);
 			else
-				to_delete(&list_c);
+				ToDelete(&list_c);
 			break;
 		default:
 			cout << "Неправильный ввод!" << endl;
