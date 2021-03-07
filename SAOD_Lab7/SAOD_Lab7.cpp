@@ -1,7 +1,7 @@
 ﻿/*
 ЛАБОРАТОРНАЯ РАБОТА №7
 Раздел 1, Тема 4, Номер 1
-
+Структура данных "список"(линейный, динамический, двунаправленный, кольцевой, должен иметь заголовок)
 */
 
 #include <iostream>
@@ -9,17 +9,17 @@
 
 using namespace std;
 
-struct element
+struct Element
 {
 	int inf;
-	element* prev;
-	element* next;
+	Element* prev;
+	Element* next;
 };
 
-element* list = new element;
+Element* list = new Element;
 
 
-int get_from_cin()
+int ConsoleReadLine()
 {
 	int result;
 	cin >> result;
@@ -35,11 +35,11 @@ int get_from_cin()
 }
 
 
-int choice()
+int Choice()
 {
 	int result;
 	do {
-		result = get_from_cin();
+		result = ConsoleReadLine();
 		if (result != 1 && result != 2)
 			cout << "Ошибка ввода! Попробуйте снова: ";
 	} while (result != 1 && result != 2);
@@ -47,14 +47,15 @@ int choice()
 }
 
 
-element* search(int item, bool step = false)
+Element* Search(int item, bool step = false)
 {
+	std::cout << "\n####################################################################\n\n";
 	if (list->prev == list && list->next == list)
 		cout << "Список пуст!" << endl;
 	else
 	{
 		int i = 0;
-		element*t = list->next;
+		Element*t = list->next;
 		do
 		{
 			if (t->inf == item) {
@@ -66,18 +67,20 @@ element* search(int item, bool step = false)
 			i++;
 		} while (t != list->next);
 	}
+	std::cout << "\n####################################################################\n\n";
 	return nullptr;
 }
 
 
-element* search_back(int item, bool step = false)
+Element* SearchBack(int item, bool step = false)
 {
+	std::cout << "\n####################################################################\n\n";
 	if (list->prev == list && list->next == list)
 		cout << "Список пуст!" << endl;
 	else
 	{
 		int i = 0;
-		element*t = list->prev;
+		Element*t = list->prev;
 		do
 		{
 			if (t->inf == item) {
@@ -89,16 +92,18 @@ element* search_back(int item, bool step = false)
 			i++;
 		} while (t != list->prev);
 	}
+	std::cout << "\n####################################################################\n\n";
 	return nullptr;
 }
 
 
-void add()
+void Add()
 {
+	std::cout << "\n####################################################################\n\n";
 	cout << "Введите значение для добавления: ";
-	int new_item = get_from_cin();
-
-	element* new_element = new element;
+	int new_item = ConsoleReadLine();
+	std::cout << "\n####################################################################\n\n";
+	Element* new_element = new Element;
 	new_element->inf = new_item;
 
 	if (list->prev == list && list->next == list)
@@ -110,24 +115,27 @@ void add()
 	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		cout <<
 			"Добавить: " << endl <<
 			"  1. До" << endl <<
 			"  2. После" << endl;
-		int add_type = choice();
+		std::cout << "\n####################################################################\n\n";
+		int add_type = Choice();
 
 		system("cls");
-
+		std::cout << "\n####################################################################\n\n";
 		if (add_type == 1)
 			cout << "Добавить до: ";
 		else
 			cout << "Добавить после: ";
-		int item = get_from_cin();
-
-		element* item_element = search(item);
+		int item = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		Element* item_element = Search(item);
 		if (item_element == nullptr)
 		{
 			cout << item << " не найден!";
+			std::cout << "\n####################################################################\n\n";
 			delete new_element;
 		}
 		else
@@ -141,8 +149,8 @@ void add()
 			if (add_type == 1)
 				item_element = item_element->prev;
 
-			element* prev = item_element;
-			element* next = item_element->next;
+			Element* prev = item_element;
+			Element* next = item_element->next;
 
 			prev->next = new_element;
 			next->prev = new_element;
@@ -154,18 +162,22 @@ void add()
 }
 
 
-void del()
+void Delete()
 {
+	std::cout << "\n####################################################################\n\n";
 	if (list->prev == list && list->next == list)
 		cout << "Список пуст!" << endl;
 	else
 	{
 		cout << "Введите значение для удаления: ";
-		int to_delete = get_from_cin();
-
-		element* elem_delete = search(to_delete);
+		int to_delete = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		Element* elem_delete = Search(to_delete);
 		if (elem_delete == nullptr)
+		{
 			cout << to_delete << " не найден!" << endl;
+			std::cout << "\n####################################################################\n\n";
+		}
 
 		if (list->prev == list->next)
 		{
@@ -174,8 +186,8 @@ void del()
 		}
 		else
 		{
-			element* prev = elem_delete->prev;
-			element* next = elem_delete->next;
+			Element* prev = elem_delete->prev;
+			Element* next = elem_delete->next;
 			prev->next = next;
 			next->prev = prev;
 
@@ -185,39 +197,43 @@ void del()
 				list->prev = elem_delete->prev;
 		}
 
-		delete  elem_delete;
+		delete elem_delete;
 	}
 }
 
 
-void search_menu()
+void SearchMenu()
 {
+	std::cout << "\n####################################################################\n\n";
 	cout <<
 		"Поиск: " << endl <<
 		"  1. прямой" << endl <<
 		"  2. обратный" << endl;
-	int search_type = choice();
-
+	std::cout << "\n####################################################################\n\n";
+	int search_type = Choice();
+	std::cout << "\n####################################################################\n\n";
 	system("cls");
-
+	std::cout << "\n####################################################################\n\n";
 	cout << "Введите элемент для поиска: ";
-	int to_delete = get_from_cin();
-
-	element* elem;
+	int to_delete = ConsoleReadLine();
+	std::cout << "\n####################################################################\n\n";
+	Element* elem;
 	if (search_type == 1)
-		elem = search(to_delete, true);
+		elem = Search(to_delete, true);
 	else
-		elem = search_back(to_delete, true);
-
+		elem = SearchBack(to_delete, true);
+	std::cout << "\n####################################################################\n\n";
 	if (elem == nullptr)
 		cout << to_delete << " не найден" << endl;
 	else
 		cout << to_delete << " найден" << endl;
+	std::cout << "\n####################################################################\n\n";
 }
 
 
-void show()
+void Show()
 {
+	std::cout << "\n####################################################################\n\n";
 	if (list->prev == list && list->next == list)
 		cout << "Список пуст!" << endl;
 	else {
@@ -225,14 +241,15 @@ void show()
 			"Показать: " << endl <<
 			"  1. в прямом направлении" << endl <<
 			"  2. в обратном направлении" << endl;
-		int show_type = choice();
-
+		std::cout << "\n####################################################################\n\n";
+		int show_type = Choice();
+		std::cout << "\n####################################################################\n\n";
 		system("cls");
-
+		std::cout << "\n####################################################################\n\n";
 		if (show_type == 2)
 		{
 			cout << "Список: ";
-			element* t = list->prev;
+			Element* t = list->prev;
 			do
 			{
 				cout << t->inf << " ";
@@ -242,7 +259,7 @@ void show()
 		}
 		else {
 			cout << "Список: ";
-			element* t = list->next;
+			Element* t = list->next;
 			do
 			{
 				cout << t->inf << " ";
@@ -251,6 +268,7 @@ void show()
 			cout << endl;
 		}
 	}
+	std::cout << "\n####################################################################\n\n";
 }
 
 
@@ -264,15 +282,16 @@ int main()
 
 	do {
 		system("cls");
-
+		std::cout << "\n####################################################################\n\n";
 		cout <<
-			"1. Добавить" << endl <<
-			"2. Удалить" << endl <<
-			"3. Поиск" << endl <<
-			"4. Показать" << endl <<
+			"1. Показать" << endl <<
+			"2. Добавить" << endl <<
+			"3. Удалить" << endl <<
+			"4. Поиск" << endl <<
 			"0. Выход" << endl;
-		menu_point = get_from_cin();
-
+		std::cout << "\n####################################################################\n\n";
+		menu_point = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
 		system("cls");
 
 		switch (menu_point)
@@ -280,19 +299,20 @@ int main()
 		case 0:
 			return 0;
 		case 1:
-			add();
+			Show();
 			break;
 		case 2:
-			del();
+			Add();
 			break;
 		case 3:
-			search_menu();
+			Delete();
 			break;
 		case 4:
-			show();
+			SearchMenu();
 			break;
 		default:
 			cout << "Ошибка ввода!" << endl;
+			std::cout << "\n####################################################################\n\n";
 		}
 
 		system("pause");

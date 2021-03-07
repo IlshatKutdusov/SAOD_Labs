@@ -1,4 +1,10 @@
-﻿#include <iostream>
+﻿/*
+ЛАБОРАТОРНАЯ РАБОТА №
+Раздел , Тема , Номер
+Структура данных ""()
+*/
+
+#include <iostream>
 #include <iomanip>
 #include <locale.h>
 

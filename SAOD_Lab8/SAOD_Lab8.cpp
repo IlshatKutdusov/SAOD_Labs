@@ -1,28 +1,34 @@
-﻿#include <iostream>
+﻿/*
+ЛАБОРАТОРНАЯ РАБОТА №8
+Раздел 1, Тема 4, Номер 3 
+Структура данных "список"(список списков, линейный, динамический, двунаправленный, кольцевой, должен иметь заголовок)
+*/
+
+#include <iostream>
 #include <locale.h>
 
 
 using namespace std;
 
 
-struct sublist_element
+struct SublistElement
 {
 	int inf;
-	sublist_element* next = nullptr;
-	sublist_element* prev = nullptr;
+	SublistElement* next = nullptr;
+	SublistElement* prev = nullptr;
 };
 
 
-struct list_element
+struct ListElement
 {
 	int num;
-	sublist_element* sublist = nullptr;
-	list_element* next = nullptr;
-	list_element* prev = nullptr;
+	SublistElement* sublist = nullptr;
+	ListElement* next = nullptr;
+	ListElement* prev = nullptr;
 };
 
 
-int get_from_cin()
+int ConsoleReadLine()
 {
 	int result;
 	cin >> result;
@@ -38,11 +44,11 @@ int get_from_cin()
 }
 
 
-int choice()
+int Choice()
 {
 	int result;
 	do {
-		result = get_from_cin();
+		result = ConsoleReadLine();
 		if (result != 1 && result != 2)
 			cout << "Ошибка ввода! Попробуйте снова: ";
 	} while (result != 1 && result != 2);
@@ -50,25 +56,29 @@ int choice()
 }
 
 
-bool empty_list(list_element* list)
+bool isEmptyList(ListElement* list)
 {
 	return list->prev == list && list->next == list;
 }
 
 
-bool empty_sublist(sublist_element* list)
+bool isEmptySublist(SublistElement* list)
 {
 	return list->prev == list && list->next == list;
 }
 
 
-list_element* search_list(list_element* list, int item)
+ListElement* SearchList(ListElement* list, int item)
 {
-	if (empty_list(list))
+	if (isEmptyList(list))
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
-		list_element* t = list->next;
+		ListElement* t = list->next;
 		do
 		{
 			if (t->num == item)
@@ -80,13 +90,17 @@ list_element* search_list(list_element* list, int item)
 }
 
 
-sublist_element* search_sublist(sublist_element* list, int inf)
+SublistElement* SearchSublist(SublistElement* list, int inf)
 {
-	if (empty_sublist(list))
+	if (isEmptySublist(list))
+	{
+		std::cout << "\n####################################################################\n\n";
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
-		sublist_element* t = list->next;
+		SublistElement* t = list->next;
 		do
 		{
 			if (t->inf == inf)
@@ -98,20 +112,21 @@ sublist_element* search_sublist(sublist_element* list, int inf)
 }
 
 
-void add_to_list(list_element* list)
+void AddToList(ListElement* list)
 {
+	std::cout << "\n####################################################################\n\n";
 	cout << "Введите номер списка для добавления: ";
-	int new_item = get_from_cin();
-
-	list_element* new_element = new list_element;
+	int new_item = ConsoleReadLine();
+	std::cout << "\n####################################################################\n\n";
+	ListElement* new_element = new ListElement;
 	new_element->num = new_item;
 
-	sublist_element* new_sublist = new sublist_element;
+	SublistElement* new_sublist = new SublistElement;
 	new_element->sublist = new_sublist;
 	new_sublist->next = new_sublist;
 	new_sublist->prev = new_sublist;
 
-	if (empty_list(list))
+	if (isEmptyList(list))
 	{
 		list->prev = new_element;
 		list->next = new_element;
@@ -120,24 +135,27 @@ void add_to_list(list_element* list)
 	}
 	else
 	{
+		std::cout << "\n####################################################################\n\n";
 		cout <<
 			"Добавить: " << endl <<
 			"  1. До" << endl <<
 			"  2. После" << endl;
-		int add_type = choice();
+		std::cout << "\n####################################################################\n\n";
+		int add_type = Choice();
 
 		system("cls");
-
+		std::cout << "\n####################################################################\n\n";
 		if (add_type == 1)
 			cout << "Добавить до: ";
 		else
 			cout << "Добавить после: ";
-		int num = get_from_cin();
-
-		list_element* item_element = search_list(list, num);
+		int num = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		ListElement* item_element = SearchList(list, num);
 		if (item_element == nullptr)
 		{
 			cout << num << " не найден";
+			std::cout << "\n####################################################################\n\n";
 			delete new_element;
 		}
 		else
@@ -151,8 +169,8 @@ void add_to_list(list_element* list)
 			if (add_type == 1)
 				item_element = item_element->prev;
 
-			list_element* prev = item_element;
-			list_element* next = item_element->next;
+			ListElement* prev = item_element;
+			ListElement* next = item_element->next;
 
 			prev->next = new_element;
 			next->prev = new_element;
@@ -164,25 +182,29 @@ void add_to_list(list_element* list)
 }
 
 
-void add_to_sublist(list_element* list)
+void AddToSublist(ListElement* list)
 {
+	std::cout << "\n####################################################################\n\n";
 	cout << "Введите номер списка: ";
-	int num = get_from_cin();
-
-	list_element* _list = search_list(list, num);
+	int num = ConsoleReadLine();
+	std::cout << "\n####################################################################\n\n";
+	ListElement* _list = SearchList(list, num);
 	if (_list == nullptr)
+	{
 		cout << num << " не найден!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
-		sublist_element* sublist = _list->sublist;
+		SublistElement* sublist = _list->sublist;
 
 		cout << "Введите значение для добавления: ";
-		int new_item = get_from_cin();
-
-		sublist_element* new_element = new sublist_element;
+		int new_item = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		SublistElement* new_element = new SublistElement;
 		new_element->inf = new_item;
 
-		if (empty_sublist(sublist))
+		if (isEmptySublist(sublist))
 		{
 			sublist->prev = new_element;
 			sublist->next = new_element;
@@ -195,7 +217,8 @@ void add_to_sublist(list_element* list)
 				"Добавить: " << endl <<
 				"  1. До" << endl <<
 				"  2. После" << endl;
-			int add_type = choice();
+			std::cout << "\n####################################################################\n\n";
+			int add_type = Choice();
 
 			system("cls");
 
@@ -203,12 +226,13 @@ void add_to_sublist(list_element* list)
 				cout << "Добавить до: ";
 			else
 				cout << "Добавить после: ";
-			int id = get_from_cin();
-
-			sublist_element* item_element = search_sublist(sublist, id);
+			int id = ConsoleReadLine();
+			std::cout << "\n####################################################################\n\n";
+			SublistElement* item_element = SearchSublist(sublist, id);
 			if (item_element == nullptr)
 			{
 				cout << id << " не найден!";
+				std::cout << "\n####################################################################\n\n";
 				delete new_element;
 			}
 			else
@@ -222,8 +246,8 @@ void add_to_sublist(list_element* list)
 				if (add_type == 1)
 					item_element = item_element->prev;
 
-				sublist_element* prev = item_element;
-				sublist_element* next = item_element->next;
+				SublistElement* prev = item_element;
+				SublistElement* next = item_element->next;
 
 				prev->next = new_element;
 				next->prev = new_element;
@@ -236,24 +260,25 @@ void add_to_sublist(list_element* list)
 }
 
 
-void show(list_element* list)
+void Show(ListElement* list)
 {
-	if (empty_list(list))
+	std::cout << "\n####################################################################\n\n";
+	if (isEmptyList(list))
 		cout << "Список пуст!" << endl;
 	else
 	{
-		list_element* t = list->next;
+		ListElement* t = list->next;
 		do
 		{
 			cout << t->num << ": ";
 
-			sublist_element* sublist = t->sublist;
+			SublistElement* sublist = t->sublist;
 
-			if (empty_sublist(sublist))
+			if (isEmptySublist(sublist))
 				cout << "пусто";
 			else
 			{
-				sublist_element* t1 = sublist->next;
+				SublistElement* t1 = sublist->next;
 				do
 				{
 					cout << t1->inf << " ";
@@ -264,29 +289,34 @@ void show(list_element* list)
 			t = t->next;
 		} while (t != list->next);
 	}
+	std::cout << "\n####################################################################\n\n";
 }
 
 
-void del_from_list(list_element* list)
+void DeleteFromList(ListElement* list)
 {
-	if (empty_list(list))
+	std::cout << "\n####################################################################\n\n";
+	if (isEmptyList(list))
+	{
 		cout << "Список пуст!" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
 		cout << "Введите номер списка для удаления: ";
-		int num = get_from_cin();
-
-		list_element* element_delete = search_list(list, num);
+		int num = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		ListElement* element_delete = SearchList(list, num);
 		if (element_delete == nullptr)
 			cout << num << " не найден" << endl;
 
-		sublist_element* sublist = element_delete->sublist;
+		SublistElement* sublist = element_delete->sublist;
 
-		if (!empty_sublist(sublist)) {
-			sublist_element* t = sublist->next;
+		if (!isEmptySublist(sublist)) {
+			SublistElement* t = sublist->next;
 			do
 			{
-				sublist_element* next = t->next;
+				SublistElement* next = t->next;
 				delete t;
 				t = next;
 			} while (t != sublist->next);
@@ -301,8 +331,8 @@ void del_from_list(list_element* list)
 		}
 		else
 		{
-			list_element* prev = element_delete->prev;
-			list_element* next = element_delete->next;
+			ListElement* prev = element_delete->prev;
+			ListElement* next = element_delete->next;
 			prev->next = next;
 			next->prev = prev;
 
@@ -317,26 +347,33 @@ void del_from_list(list_element* list)
 }
 
 
-void del_from_sublist(list_element* list)
+void DeleteFromSublist(ListElement* list)
 {
+	std::cout << "\n####################################################################\n\n";
 	cout << "Введите номер списка: ";
-	int num = get_from_cin();
-
-	list_element* _list = search_list(list, num);
+	int num = ConsoleReadLine();
+	std::cout << "\n####################################################################\n\n";
+	ListElement* _list = SearchList(list, num);
 	if (_list == nullptr)
+	{
 		cout << num << " не найден" << endl;
+		std::cout << "\n####################################################################\n\n";
+	}
 	else
 	{
-		sublist_element* sublist = _list->sublist;
+		SublistElement* sublist = _list->sublist;
 
-		if (empty_sublist(sublist))
+		if (isEmptySublist(sublist))
+		{
 			cout << "Вспомогательнвй список пуст!" << endl;
+			std::cout << "\n####################################################################\n\n";
+		}
 		else
 		{
 			cout << "Введите значение для удаления: ";
-			int to_delete = get_from_cin();
-
-			sublist_element* element_delete = search_sublist(sublist, to_delete);
+			int to_delete = ConsoleReadLine();
+			std::cout << "\n####################################################################\n\n";
+			SublistElement* element_delete = SearchSublist(sublist, to_delete);
 			if (element_delete == nullptr)
 				cout << to_delete << " не найден" << endl;
 
@@ -347,8 +384,8 @@ void del_from_sublist(list_element* list)
 			}
 			else
 			{
-				sublist_element* prev = element_delete->prev;
-				sublist_element* next = element_delete->next;
+				SublistElement* prev = element_delete->prev;
+				SublistElement* next = element_delete->next;
 				prev->next = next;
 				next->prev = prev;
 
@@ -364,22 +401,24 @@ void del_from_sublist(list_element* list)
 }
 
 
-void full_search(list_element* list)
+void FullSearch(ListElement* list)
 {
+	std::cout << "\n####################################################################\n\n";
 	if (list->prev == list && list->next == list)
 		cout << "Список пуст!" << endl;
 	else
 	{
 		cout << "Введите значение для поиска: ";
-		int to_delete = get_from_cin();
-
-		list_element *t = list->next;
+		int to_delete = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		ListElement *t = list->next;
 		do
 		{
-			if (search_sublist(t->sublist, to_delete) != nullptr)
+			if (SearchSublist(t->sublist, to_delete) != nullptr)
 			{
 				system("cls");
 				cout << to_delete << " найден" << endl;
+				std::cout << "\n####################################################################\n\n";
 				return;
 			}
 			t = t->next;
@@ -387,6 +426,7 @@ void full_search(list_element* list)
 
 		system("cls");
 		cout << to_delete << " не найден" << endl;
+		std::cout << "\n####################################################################\n\n";
 	}
 }
 
@@ -394,7 +434,7 @@ void full_search(list_element* list)
 int main()
 {
 	setlocale(LC_ALL, "Rus");
-	list_element* list = new list_element;
+	ListElement* list = new ListElement;
 	list->next = list;
 	list->prev = list;
 
@@ -402,7 +442,7 @@ int main()
 
 	do {
 		system("cls");
-
+		std::cout << "\n####################################################################\n\n";
 		cout <<
 			"1. Добавить в основной список" << endl <<
 			"2. Добавить во вспомогательный список" << endl <<
@@ -411,7 +451,8 @@ int main()
 			"5. Поиск" << endl <<
 			"6. Показать" << endl <<
 			"0. Выход" << endl;
-		menu_point = get_from_cin();
+		std::cout << "\n####################################################################\n\n";
+		menu_point = ConsoleReadLine();
 
 		system("cls");
 
@@ -420,25 +461,26 @@ int main()
 		case 0:
 			return 0;
 		case 1:
-			add_to_list(list);
+			AddToList(list);
 			break;
 		case 2:
-			add_to_sublist(list);
+			AddToSublist(list);
 			break;
 		case 3:
-			del_from_list(list);
+			DeleteFromList(list);
 			break;
 		case 4:
-			del_from_sublist(list);
+			DeleteFromSublist(list);
 			break;
 		case 5:
-			full_search(list);
+			FullSearch(list);
 			break;
 		case 6:
-			show(list);
+			Show(list);
 			break;
 		default:
 			cout << "Ошибка ввода!" << endl;
+			std::cout << "\n####################################################################\n\n";
 		}
 
 		system("pause");

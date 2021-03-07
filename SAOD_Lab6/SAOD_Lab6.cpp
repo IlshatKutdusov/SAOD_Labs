@@ -1,7 +1,8 @@
 ﻿/*
 ЛАБОРАТОРНАЯ РАБОТА №6
 Раздел 1, Тема 3, Номер 5
-
+Структура данных "список"(линейный, динамический, удаление - перемеение из основного списка во вспомогательный,
+работа с ним по стековому принципу)
 */
 
 #include <iostream>
@@ -10,18 +11,18 @@
 using namespace std;
 
 
-struct element
+struct Element
 {
 	int inf;
-	element* next = nullptr;
+	Element* next = nullptr;
 };
 
 
-element* list = new element;
-element* additional = new element;
+Element* list = new Element;
+Element* additional = new Element;
 
 
-int get_from_cin()
+int ConsoleReadLine()
 {
 	int result;
 	cin >> result;
@@ -37,49 +38,54 @@ int get_from_cin()
 }
 
 
-element* search(int data)
+Element* Search(int data)
 {
-	for (element* t = list; t != nullptr; t = t->next)
+	for (Element* t = list; t != nullptr; t = t->next)
 		if (t->next != nullptr && t->next->inf == data)
 			return t;
 	return nullptr;
 }
 
 
-void show()
+void Show()
 {
+	std::cout << "\n####################################################################\n\n";
 	if (list->next == nullptr)
-		cout << "Список пуст!" << endl;
+		cout << "Основной список пуст!" << endl;
 	else
 	{
 		cout << "Основной список: ";
-		for (element*t = list->next; t != nullptr; t = t->next)
+		for (Element*t = list->next; t != nullptr; t = t->next)
 			cout << t->inf << " ";
 		cout << endl;
 	}
+	std::cout << "\n####################################################################\n\n";
 }
 
 
-void show_additional()
+void ShowAdditional()
 {
+	std::cout << "\n####################################################################\n\n";
 	if (additional->next == nullptr)
 		cout << "Дополнительный список пуст!" << endl;
 	else
 	{
 		cout << "Дополнительный список: ";
-		for (element*t = additional->next; t != nullptr; t = t->next)
+		for (Element*t = additional->next; t != nullptr; t = t->next)
 			cout << t->inf << " ";
 		cout << endl;
 	}
+	std::cout << "\n####################################################################\n\n";
 }
 
 
-void add()
+void Add()
 {
+	std::cout << "\n####################################################################\n\n";
 	cout << "Введите число для добавления: ";
-	int new_inf = get_from_cin();
-
-	element* new_element = new element;
+	int new_inf = ConsoleReadLine();
+	std::cout << "\n####################################################################\n\n";
+	Element* new_element = new Element;
 	new_element->inf = new_inf;
 
 	if (list->next == nullptr)
@@ -87,26 +93,31 @@ void add()
 	else
 	{
 		int add_type;
+		std::cout << "\n####################################################################\n\n";
 		cout <<
 			"Добавить: " << endl <<
 			"  1. до" << endl <<
 			"  2. после" << endl;
 		do {
-			add_type = get_from_cin();
+			std::cout << "\n####################################################################\n\n";
+			add_type = ConsoleReadLine();
+			std::cout << "\n####################################################################\n\n";
 			if (add_type != 1 && add_type != 2)
 				cout << "Ошибка ввода! Попробуйте снова: ";
 		} while (add_type != 1 && add_type != 2);
 
+		std::cout << "\n####################################################################\n\n";
 		if (add_type == 1)
 			cout << "Добавить до: ";
 		else
 			cout << "Добавить после: ";
-		int data = get_from_cin();
-
-		element* item_element = search(data);
+		int data = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		Element* item_element = Search(data);
 		if (item_element == nullptr)
 		{
 			cout << data << " элемент не найден!";
+			std::cout << "\n\n####################################################################\n\n";
 			delete new_element;
 		}
 		else
@@ -122,32 +133,34 @@ void add()
 }
 
 
-void push_additional(element* n)
+void PushAdditional(Element* n)
 {
 	n->next = additional->next;
 	additional->next = n;
 }
 
 
-void del()
+void Delete()
 {
+	std::cout << "\n####################################################################\n\n";
 	if (list->next == nullptr)
 		cout << "Список пуст!" << endl;
 	else
 	{
 		cout << "Введите число для удаления: ";
-		int to_delete = get_from_cin();
-
-		element* index = search(to_delete);
+		int to_delete = ConsoleReadLine();
+		std::cout << "\n####################################################################\n\n";
+		Element* index = Search(to_delete);
 		if (index == nullptr)
 			cout << to_delete << " элемент не найден!" << endl;
 		else
 		{
-			element* t = index->next;
+			Element* t = index->next;
 			index->next = t->next;
-			push_additional(t);
+			PushAdditional(t);
 		}
 	}
+	std::cout << "\n####################################################################\n\n";
 }
 
 
@@ -158,14 +171,15 @@ int main()
 
 	do {
 		system("cls");
-
+		std::cout << "\n####################################################################\n\n";
 		cout <<
-			"1. Добавить" << endl <<
-			"2. Удалить" << endl <<
-			"3. Показать основной список" << endl <<
-			"4. Показать дополнительный список" << endl <<
+			"1. Показать основной список" << endl <<
+			"2. Показать дополнительный список" << endl <<
+			"3. Добавить" << endl <<
+			"4. Удалить" << endl <<
 			"0. Выход" << endl;
-		choice = get_from_cin();
+		std::cout << "\n####################################################################\n\n";
+		choice = ConsoleReadLine();
 
 		system("cls");
 
@@ -174,19 +188,20 @@ int main()
 		case 0:
 			return 0;
 		case 1:
-			add();
+			Show();
 			break;
 		case 2:
-			del();
+			ShowAdditional();
 			break;
 		case 3:
-			show();
+			Add();
 			break;
 		case 4:
-			show_additional();
+			Delete();
 			break;
 		default:
 			cout << "Ошибка ввода!" << endl;
+			std::cout << "\n####################################################################\n\n";
 		}
 
 		system("pause");
