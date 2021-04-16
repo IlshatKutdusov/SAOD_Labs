@@ -1,7 +1,7 @@
 ﻿/*
-ЛАБОРАТОРНАЯ РАБОТА №
-Раздел , Тема , Номер
-Структура данных ""()
+ЛАБОРАТОРНАЯ РАБОТА №9
+Раздел 1, Тема 5, Номер 1
+Структура данных "дерево"(идеально сбалансированное двоичное дерево)
 */
 
 #include <iostream>
@@ -11,15 +11,15 @@
 using namespace std;
 
 
-struct node
+struct Node
 {
-	node* left = nullptr;
-	node* right = nullptr;
-	int inf = -1;
+	int value = -1;
+	Node* left = nullptr;
+	Node* right = nullptr;
 };
 
 
-int get_from_cin()
+int ConsoleReadLine()
 {
 	int result;
 	cin >> result;
@@ -35,83 +35,84 @@ int get_from_cin()
 }
 
 
-void create(node* tree, int count)
-{
-	count--;
-	tree->inf = 1 + rand() % 99;
-	if (count / 2 + count % 2 > 0)
-	{
-		tree->left = new node;
-		create(tree->left, count / 2 + count % 2);
-	}
-	if (count / 2 > 0)
-	{
-		tree->right = new node;
-		create(tree->right, count / 2);
-	}
-}
-
-
-void forward(node* tree, int level = 0) //обход в прямом направлении
+void Straight(Node* tree, int level = 0) 
 {
 	for (int i = 0; i < level; i++)
 		cout << "    ";
-	cout << setw(2) << tree->inf << endl;
+	cout << setw(2) << tree->value << endl;
 	if (tree->left != nullptr)
-		forward(tree->left, level + 1);
+		Straight(tree->left, level + 1);
 	if (tree->right != nullptr)
-		forward(tree->right, level + 1);
+		Straight(tree->right, level + 1);
 }
 
 
-void symmetric(node* tree, int level = 0) //симметричный обход
+void Symmetric(Node* tree, int level = 0)
 {
 	if (tree->left != nullptr)
-		symmetric(tree->left, level + 1);
+		Symmetric(tree->left, level + 1);
 	for (int i = 0; i < level; i++)
 		cout << "    ";
-	cout << setw(2) << tree->inf << endl;
+	cout << setw(2) << tree->value << endl;
 	if (tree->right != nullptr)
-		symmetric(tree->right, level + 1);
+		Symmetric(tree->right, level + 1);
 }
 
 
-void back_symmetric(node* tree, int level = 0) //обратно-симметричный обход
+void SymmetricBack(Node* tree, int level = 0)
 {
 	if (tree->right != nullptr)
-		back_symmetric(tree->right, level + 1);
+		SymmetricBack(tree->right, level + 1);
 	for (int i = 0; i < level; i++)
 		cout << "    ";
-	cout << setw(2) << tree->inf << endl;
+	cout << setw(2) << tree->value << endl;
 	if (tree->left != nullptr)
-		back_symmetric(tree->left, level + 1);
+		SymmetricBack(tree->left, level + 1);
 }
 
 
-void del(node* tree)
+void Delete(Node* tree)
 {
 	if (tree->left != nullptr)
-		del(tree->left);
+		Delete(tree->left);
 	if (tree->right != nullptr)
-		del(tree->right);
+		Delete(tree->right);
 	delete tree;
 }
 
 
-node* make(node* tree)
+void CreateNode(Node* tree, int count)
 {
-	tree = new node;
+	count--;
+	tree->value = 1 + rand() % 99;
+	if (count / 2 + count % 2 > 0)
+	{
+		tree->left = new Node;
+		CreateNode(tree->left, count / 2 + count % 2);
+	}
+	if (count / 2 > 0)
+	{
+		tree->right = new Node;
+		CreateNode(tree->right, count / 2);
+	}
+}
+
+
+Node* Create(Node* tree)
+{
+	tree = new Node;
 
 	cout << "Введите количество вершин: ";
-	int count = get_from_cin();
+	int count = ConsoleReadLine();
 
 	while (count <= 0)
 	{
 		cout << "Ошибка! Попробуйте заново: ";
-		count = get_from_cin();
+		count = ConsoleReadLine();
+		cout << "\n####################################################################\n\n";
 	}
 
-	create(tree, count);
+	CreateNode(tree, count);
 
 	return tree;
 }
@@ -120,56 +121,61 @@ node* make(node* tree)
 int main()
 {
 	setlocale(LC_ALL, "Rus");
-	node* tree = nullptr;
+	Node* tree = nullptr;
 
-	int menu_point;
+	int Choice;
 
 	do {
 		system("cls");
 
+		cout << "\n####################################################################\n\n";
 		cout <<
 			"1. Создать дерево" << endl <<
 			"2. Обход в прямом направлении" << endl <<
 			"3. Обход в симметричном направлении" << endl <<
 			"4. Обход в обратно-симметричном направлении" << endl <<
 			"0. Выход" << endl;
-		menu_point = get_from_cin();
+		cout << "\n####################################################################\n\n";
+
+		Choice = ConsoleReadLine();
 
 		system("cls");
 
-		switch (menu_point)
+		cout << "\n####################################################################\n\n";
+		switch (Choice)
 		{
-		case 0:
-			return 0;
-		case 1:
-			if (tree != nullptr)
-				del(tree);
-			tree = make(tree);
-			break;
-		case 2:
-			if (tree != nullptr)
-				forward(tree);
-			else
-				cout << "Дерево не создано!" << endl;
-			break;
-		case 3:
-			if (tree != nullptr)
-				symmetric(tree);
-			else
-				cout << "Дерево не создано!" << endl;
-			break;
-		case 4:
-			if (tree != nullptr)
-				back_symmetric(tree);
-			else
-				cout << "Дерево не создано!" << endl;
-			break;
-		default:
-			cout << "Ошибка ввода!" << endl;
+			case 0:
+				return 0;
+			case 1:
+				if (tree != nullptr)
+					Delete(tree);
+				tree = Create(tree);
+				break;
+			case 2:
+				if (tree != nullptr)
+					Straight(tree);
+				else
+					cout << "Дерево не создано!" << endl;
+				break;
+			case 3:
+				if (tree != nullptr)
+					Symmetric(tree);
+				else
+					cout << "Дерево не создано!" << endl;
+				break;
+			case 4:
+				if (tree != nullptr)
+					SymmetricBack(tree);
+				else
+					cout << "Дерево не создано!" << endl;
+				break;
+			default:
+				cout << "Ошибка ввода!" << endl;
 		}
+		cout << "\n####################################################################\n\n";
 
 		system("pause");
-	} while (menu_point != 0);
+	} while (Choice != 0);
 
 	return 0;
 }

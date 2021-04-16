@@ -1,7 +1,7 @@
 ﻿/*
 ЛАБОРАТОРНАЯ РАБОТА №8
 Раздел 1, Тема 4, Номер 3 
-Структура данных "список"(список списков, линейный, динамический, двунаправленный, кольцевой, должен иметь заголовок)
+Структура данных "список"(список списков, линейный, динамический, двунаправленный, кольцевой, имеет заголовок (оба списка))
 */
 
 #include <iostream>
@@ -308,41 +308,48 @@ void DeleteFromList(ListElement* list)
 		std::cout << "\n####################################################################\n\n";
 		ListElement* element_delete = SearchList(list, num);
 		if (element_delete == nullptr)
+		{
 			cout << num << " не найден" << endl;
+			std::cout << "\n####################################################################\n\n";
+		}
+		else 
+		{
+			SublistElement* sublist = element_delete->sublist;
 
-		SublistElement* sublist = element_delete->sublist;
+			if (!isEmptySublist(sublist)) {
+				SublistElement* t = sublist->next;
+				do
+				{
+					SublistElement* next = t->next;
+					delete t;
+					t = next;
+				} while (t != sublist->next);
+			}
 
-		if (!isEmptySublist(sublist)) {
-			SublistElement* t = sublist->next;
-			do
+			delete element_delete->sublist;
+
+			if (list->prev == list->next)
 			{
-				SublistElement* next = t->next;
-				delete t;
-				t = next;
-			} while (t != sublist->next);
+				list->prev = list;
+				list->next = list;
+			}
+			else
+			{
+				ListElement* prev = element_delete->prev;
+				ListElement* next = element_delete->next;
+				prev->next = next;
+				next->prev = prev;
+
+				if (list->next == element_delete)
+					list->next = element_delete->next;
+				if (list->prev == element_delete)
+					list->prev = element_delete->prev;
+			}
+
+			delete  element_delete;
 		}
 
-		delete element_delete->sublist;
-
-		if (list->prev == list->next)
-		{
-			list->prev = list;
-			list->next = list;
-		}
-		else
-		{
-			ListElement* prev = element_delete->prev;
-			ListElement* next = element_delete->next;
-			prev->next = next;
-			next->prev = prev;
-
-			if (list->next == element_delete)
-				list->next = element_delete->next;
-			if (list->prev == element_delete)
-				list->prev = element_delete->prev;
-		}
-
-		delete  element_delete;
+		
 	}
 }
 
@@ -438,7 +445,7 @@ int main()
 	list->next = list;
 	list->prev = list;
 
-	int menu_point;
+	int choice;
 
 	do {
 		system("cls");
@@ -452,11 +459,11 @@ int main()
 			"6. Показать" << endl <<
 			"0. Выход" << endl;
 		std::cout << "\n####################################################################\n\n";
-		menu_point = ConsoleReadLine();
+		choice = ConsoleReadLine();
 
 		system("cls");
 
-		switch (menu_point)
+		switch (choice)
 		{
 		case 0:
 			return 0;
@@ -484,7 +491,7 @@ int main()
 		}
 
 		system("pause");
-	} while (menu_point != 0);
+	} while (choice != 0);
 
 	return 0;
 }
