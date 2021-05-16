@@ -23,7 +23,7 @@ struct Node
 
 struct Tstack
 {
-	Node* n = nullptr;
+	Node* node = nullptr;
 	Tstack* next = nullptr;
 	int level = -1;
 };
@@ -87,6 +87,36 @@ void CreateNode(Node* tree, int count)
 }
 
 
+Node* Create(Node* tree)
+{
+	srand(time(NULL));
+	tree = new Node;
+
+	cout << "Введите количество вершин: ";
+	int count = ConsoleReadLine();
+
+	while (count <= 0)
+	{
+		cout << "Ошибка! Попробуйте снова: ";
+		count = ConsoleReadLine();
+	}
+
+	CreateNode(tree, count);
+
+	return tree;
+}
+
+
+void Delete(Node* tree)
+{
+	if (tree->left != nullptr)
+		Delete(tree->left);
+	if (tree->right != nullptr)
+		Delete(tree->right);
+	delete tree;
+}
+
+
 void Straight(Node* tree, int level = 0)
 {
 	for (int i = 0; i < level; i++)
@@ -136,7 +166,7 @@ void SymmetricNoRecursive(Node* tree)
 		{
 			t_s = new Tstack;
 			t_s->level = level++;
-			t_s->n = t;
+			t_s->node = t;
 			Add(&stack, t_s);
 			t = t->left;
 		}
@@ -147,7 +177,7 @@ void SymmetricNoRecursive(Node* tree)
 			break;
 		else {
 			level = t_s->level + 1;
-			t = t_s->n;
+			t = t_s->node;
 
 			for (int i = 0; i < level - 1; i++)
 				cout << "    ";
@@ -156,36 +186,6 @@ void SymmetricNoRecursive(Node* tree)
 			t = t->right;
 		}
 	}
-}
-
-
-void Delete(Node* tree)
-{
-	if (tree->left != nullptr)
-		Delete(tree->left);
-	if (tree->right != nullptr)
-		Delete(tree->right);
-	delete tree;
-}
-
-
-Node* Create(Node* tree)
-{
-	srand(time(NULL));
-	tree = new Node;
-
-	cout << "Введите количество вершин: ";
-	int count = ConsoleReadLine();
-
-	while (count <= 0)
-	{
-		cout << "Ошибка! Попробуйте снова: ";
-		count = ConsoleReadLine();
-	}
-
-	CreateNode(tree, count);
-
-	return tree;
 }
 
 
